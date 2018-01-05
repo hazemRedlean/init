@@ -14,17 +14,17 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-const forceSSL = function() {
-    return function (req, res, next) {
-        if (req.headers['x-forwarded-proto'] !== 'https') {
-            return res.redirect(
-                ['https://', req.get('Host'), req.url].join('')
-            );
-        }
-        next();
-    }
-};
-app.use(forceSSL())
+// const forceSSL = function() {
+//     return function (req, res, next) {
+//         if (req.headers['x-forwarded-proto'] !== 'https') {
+//             return res.redirect(
+//                 ['https://', req.get('Host'), req.url].join('')
+//             );
+//         }
+//         next();
+//     }
+// };
+// app.use(forceSSL())
 app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,10 +42,8 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname + '/dist/index.html'));
-});
-//app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
